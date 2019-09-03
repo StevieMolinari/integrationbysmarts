@@ -1,0 +1,111 @@
+library(dplyr)
+
+## first attempt all in one go
+sin.cos.prod <- function(x, n, m){
+  sin(m*x)*cos(n*x)
+}
+
+int.sin.cos.over.ab <- function(nPts, sinCons, cosCons, a = -pi, b = pi){
+  domainWidth = b - a
+  samplePts = a + runif(nPts) * domainWidth
+  return(
+    sum(sin.cos.prod(samplePts, m = sinCons, n = cosCons))/nPts * domainWidth
+  )
+}
+
+int.sin.cos.over.ab(3, 4, 10^3)
+
+## not 0... hmmm 
+
+### shucks let's break it down.
+
+sin.cos.prod(0, 1, 1)
+sin(0)
+cos(0)
+
+sin(pi/2)
+cos(pi/2)
+
+## really that's annoying
+
+cos(pi/2) == 0
+
+## also annoying
+
+cos(pi/2) %>% near(0)
+near(pi/2, 0)
+
+sin.cos.prod(pi/2, 1, 0)
+## damn,
+### wait i'm a dum dum
+
+sin.cos.prod <- function(x, m, n){
+  sin(m*x)*cos(n*x)
+}
+
+## can you see the difference?! haha 
+### it only took me 42 lines to spot it
+
+sin.cos.prod(pi/2, 1, 0)
+
+
+### BOOM i am all that is person!!
+## but i don't think thats right... this shouldn't have affected the integral
+## that function is symmetric... or...
+## or maybe it's the fact that the 3 and 4 were random... 
+## and it's supposed to work for all m, n %in% 1:Inf 
+
+### I took a closer look and I think i maybe see it
+int.sin.cos.over.ab <- function(nPts, sinCons, cosCons, a = -pi, b = pi){
+  domainWidth = b - a
+  samplePts = a + runif(nPts) * domainWidth
+  return(
+    sum(sin.cos.prod(samplePts, m = sinCons, n = cosCons))/nPts * domainWidth
+  )
+}
+
+
+int.sin.cos.over.ab(10^3, 3, 4)
+
+### that's embarissing haha
+### i put that argument there cause i thought i would change it more often
+int.sin.cos.over.ab(10^3, 3, 4)
+int.sin.cos.over.ab(10^3, 3, 4)
+int.sin.cos.over.ab(10^3, 3, 4)
+int.sin.cos.over.ab(10^3, 3, 4)
+
+## encouraging 
+## lets step up our sample size
+
+
+int.sin.cos.over.ab(10^4, 3, 4)
+
+# # # # int.sin.cos.over.ab(10^13, 3, 4)
+## not good... not good. mayday mayday. computer down!!!
+
+#### A Hashtag Poem ####
+### the sinking feeling in your stomach
+### when you suddenly realizing that
+### after turning the volume up to 11
+### on your mc simulation
+### you haven't save your work
+### #HashtagPoem #integrationbysmarts
+
+int.sin.cos.over.ab(10^5, 3, 4)
+int.sin.cos.over.ab(10^6, 3, 4)
+int.sin.cos.over.ab(10^7, 3, 4)
+
+## that took a moment. will 10^8 take 10 'moments'?
+
+int.sin.cos.over.ab(10^8, 3, 4)
+
+## i actually counted 38 moments... 
+## hmmm well that's annoying. i'm definitely not trying 10^9
+## i aint got time for that
+## will this work? 
+near(int.sin.cos.over.ab(10^7, 3, 4), 0)
+
+## NOPE
+## that's even more annoying
+### back to the drawing board...
+
